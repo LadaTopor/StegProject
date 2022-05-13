@@ -161,16 +161,10 @@ namespace StegProject
             }
 
             FileStream rFile;
-            try
-            {
-                rFile = new FileStream(FilePic, FileMode.Open); //открываем поток
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Ошибка открытия файла", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            rFile = new FileStream(FilePic, FileMode.Open); //открываем поток
+           
             Bitmap bPic = new Bitmap(rFile);
+
             if (!Cryption.isEncryption(bPic)) {
                 MessageBox.Show("В файле нет зашифрованной информации", "Информация", MessageBoxButtons.OK);
                 rFile.Close();
@@ -226,27 +220,15 @@ namespace StegProject
             };
 
             FileStream wFile;
-            try
-            {
+
                 wFile = new FileStream(sFileText, FileMode.Create); //открываем поток на запись результатов
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Ошибка открытия файла на запись", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                rFile.Close();
-                return;
-            }
+
             StreamWriter wText = new StreamWriter(wFile, Encoding.Default);
             wText.Write(strMessage);
             MessageBox.Show("Текст записан в файл", "Информация", MessageBoxButtons.OK);
             wText.Close();
             wFile.Close(); //закрываем поток
             rFile.Close();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
