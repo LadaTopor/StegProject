@@ -190,5 +190,45 @@ namespace StegProject
             string m = Encoding.GetEncoding(1251).GetString(rez);
             return Convert.ToInt32(m, 10);
         }
+        static public byte[] Decrypt(Bitmap bPic)
+        {
+            int countSymbol = Cryption.ReadCountText(bPic); //считали количество зашифрованных символов
+            byte[] message = new byte[countSymbol];
+            int index = 0;
+            bool st = false;
+            for (int i = ENCRYP_TEXT_SIZE + 1; i < bPic.Width; i++)
+            {
+                for (int j = 0; j < bPic.Height; j++)
+                {
+                    Color pixelColor = bPic.GetPixel(i, j);
+                    if (index == message.Length)
+                    {
+                        st = true;
+                        break;
+                    }
+                    BitArray colorArray = Bits.ByteToBit(pixelColor.R);
+                    BitArray messageArray = Bits.ByteToBit(pixelColor.R); ;
+                    messageArray[0] = colorArray[0];
+                    messageArray[1] = colorArray[1];
+
+                    colorArray = Bits.ByteToBit(pixelColor.G);
+                    messageArray[2] = colorArray[0];
+                    messageArray[3] = colorArray[1];
+                    messageArray[4] = colorArray[2];
+
+                    colorArray = Bits.ByteToBit(pixelColor.B);
+                    messageArray[5] = colorArray[0];
+                    messageArray[6] = colorArray[1];
+                    messageArray[7] = colorArray[2];
+                    message[index] = Bits.BitToByte(messageArray);
+                    index++;
+                }
+                if (st)
+                {
+                    break;
+                }
+            }
+            return message;
+        }
     }
 }

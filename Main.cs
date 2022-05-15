@@ -144,38 +144,8 @@ namespace StegProject
                 return;
             }
 
-            int countSymbol = Cryption.ReadCountText(bPic); //считали количество зашифрованных символов
-            byte[] message = new byte[countSymbol];
-            int index = 0;
-            bool st = false;
-            for (int i = ENCRYP_TEXT_SIZE + 1; i < bPic.Width; i++) {
-                for (int j = 0; j < bPic.Height; j++) {
-                    Color pixelColor = bPic.GetPixel(i, j);
-                    if (index == message.Length) {
-                        st = true;
-                        break;
-                    }
-                    BitArray colorArray = Bits.ByteToBit(pixelColor.R);
-                    BitArray messageArray = Bits.ByteToBit(pixelColor.R); ;
-                    messageArray[0] = colorArray[0];
-                    messageArray[1] = colorArray[1];
+            byte[] message = Cryption.Decrypt(bPic); // расшифрованное сообщение в битовой форме
 
-                    colorArray = Bits.ByteToBit(pixelColor.G);
-                    messageArray[2] = colorArray[0];
-                    messageArray[3] = colorArray[1];
-                    messageArray[4] = colorArray[2];
-
-                    colorArray = Bits.ByteToBit(pixelColor.B);
-                    messageArray[5] = colorArray[0];
-                    messageArray[6] = colorArray[1];
-                    messageArray[7] = colorArray[2];
-                    message[index] = Bits.BitToByte(messageArray);
-                    index++;
-                }
-                if (st) {
-                    break;
-                }
-            }
             string strMessage = Encoding.GetEncoding(1251).GetString(message);
 
             string sFileText;
@@ -194,7 +164,7 @@ namespace StegProject
 
             FileStream wFile;
 
-                wFile = new FileStream(sFileText, FileMode.Create); //открываем поток на запись результатов
+            wFile = new FileStream(sFileText, FileMode.Create); //открываем поток на запись результатов
 
             StreamWriter wText = new StreamWriter(wFile, Encoding.Default);
             wText.Write(strMessage);
