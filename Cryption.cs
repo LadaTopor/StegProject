@@ -192,7 +192,7 @@ namespace StegProject
         }
         static public byte[] Decrypt(Bitmap bPic)
         {
-            int countSymbol = Cryption.ReadCountText(bPic); //считали количество зашифрованных символов
+            int countSymbol = ReadCountText(bPic); //считали количество зашифрованных символов
             byte[] message = new byte[countSymbol];
             int index = 0;
             bool st = false;
