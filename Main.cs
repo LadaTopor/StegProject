@@ -11,9 +11,9 @@ using System.Collections;
 
 namespace StegProject
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -23,31 +23,7 @@ namespace StegProject
         const int ENCRYP_TEXT_MAX_SIZE = 999;
 
 
-        /*Читает количество символов для дешифрования из первых бит картинки*/
-        private int ReadCountText(Bitmap src) {
-            byte[] rez = new byte[ENCRYP_TEXT_SIZE]; 
-            for (int i = 0; i < ENCRYP_TEXT_SIZE; i++)
-            {
-                Color color = src.GetPixel(0, i + 1); 
-                BitArray colorArray = Bits.ByteToBit(color.R); //биты цвета
-                BitArray bitCount = Bits.ByteToBit(color.R); ; //инициализация результирующего массива бит
-                bitCount[0] = colorArray[0];
-                bitCount[1] = colorArray[1];
 
-                colorArray = Bits.ByteToBit(color.G);
-                bitCount[2] = colorArray[0];
-                bitCount[3] = colorArray[1];
-                bitCount[4] = colorArray[2];
-
-                colorArray = Bits.ByteToBit(color.B);
-                bitCount[5] = colorArray[0];
-                bitCount[6] = colorArray[1];
-                bitCount[7] = colorArray[2];
-                rez[i] = Bits.BitToByte(bitCount);
-            }
-            string m = Encoding.GetEncoding(1251).GetString(rez);
-            return Convert.ToInt32(m, 10);
-        }
 
         /* Открыть файл для шифрования */
         private void Enrypt_Click(object sender, EventArgs e)
@@ -171,7 +147,7 @@ namespace StegProject
                 return;
             }
 
-            int countSymbol = ReadCountText(bPic); //считали количество зашифрованных символов
+            int countSymbol = Cryption.ReadCountText(bPic); //считали количество зашифрованных символов
             byte[] message = new byte[countSymbol];
             int index = 0;
             bool st = false;

@@ -169,5 +169,31 @@ namespace StegProject
                 }
             }
         }
+        /*Читает количество символов для дешифрования из первых бит картинки*/
+        static public int ReadCountText(Bitmap src)
+        {
+            byte[] rez = new byte[ENCRYP_TEXT_SIZE];
+            for (int i = 0; i < ENCRYP_TEXT_SIZE; i++)
+            {
+                Color color = src.GetPixel(0, i + 1);
+                BitArray colorArray = Bits.ByteToBit(color.R); //биты цвета
+                BitArray bitCount = Bits.ByteToBit(color.R); ; //инициализация результирующего массива бит
+                bitCount[0] = colorArray[0];
+                bitCount[1] = colorArray[1];
+
+                colorArray = Bits.ByteToBit(color.G);
+                bitCount[2] = colorArray[0];
+                bitCount[3] = colorArray[1];
+                bitCount[4] = colorArray[2];
+
+                colorArray = Bits.ByteToBit(color.B);
+                bitCount[5] = colorArray[0];
+                bitCount[6] = colorArray[1];
+                bitCount[7] = colorArray[2];
+                rez[i] = Bits.BitToByte(bitCount);
+            }
+            string m = Encoding.GetEncoding(1251).GetString(rez);
+            return Convert.ToInt32(m, 10);
+        }
     }
 }
