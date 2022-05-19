@@ -15,13 +15,6 @@ namespace StegProject
             InitializeComponent();
         }
 
-        const int ENCRYP_PESENT_SIZE = 1;
-        const int ENCRYP_TEXT_SIZE = 3;
-        const int ENCRYP_TEXT_MAX_SIZE = 999;
-
-
-
-
         /* Открыть файл для шифрования */
         private void Enrypt_Click(object sender, EventArgs e)
         {
@@ -43,6 +36,8 @@ namespace StegProject
             rFile = new FileStream(FilePic, FileMode.Open); //открываем поток
             Bitmap bPic = new Bitmap(rFile);
 
+            pbField.Image = bPic;
+
             OpenFileDialog dText = new OpenFileDialog();
             dText.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
             if (dText.ShowDialog() == DialogResult.OK)
@@ -58,44 +53,10 @@ namespace StegProject
             FileStream rText;
 
             rText = new FileStream(FileText, FileMode.Open); //открываем поток текстовым файлом
-            
-            BinaryReader bText = new BinaryReader(rText, Encoding.ASCII);
-
-            List<byte> bList = new List<byte>();
-            while (bText.PeekChar() != -1) { //считали весь текстовый файл для шифрования в лист байт
-                bList.Add(bText.ReadByte());
-            }
-            int CountText = bList.Count; // в CountText - количество в байтах текста, который нужно закодировать
-            bText.Close();
             rFile.Close();
 
-            //проверям, что размер не выходит за рамки максимального, поскольку для хранения размера используется
-            //ограниченное количество байт
-            if (CountText > (ENCRYP_TEXT_MAX_SIZE - ENCRYP_PESENT_SIZE - ENCRYP_TEXT_SIZE)) {
-                MessageBox.Show("Размер текста велик для данного алгоритма, уменьшите размер", "Информация", MessageBoxButtons.OK);
-                return;
-            }
+            Cryption.Enrypt(bPic, rText); // Кодируем сообщение
 
-            //проверяем, поместится ли исходный текст в картинке
-            if (CountText > (bPic.Width * bPic.Height)) {
-                MessageBox.Show("Выбранная картинка мала для размещения выбранного текста", "Информация", MessageBoxButtons.OK);
-                return;
-            }
-
-            //проверяем, может быть картинка уже зашифрована
-            if (Cryption.isEncryption(bPic))
-            {
-                MessageBox.Show("Файл уже зашифрован", "Информация", MessageBoxButtons.OK);
-                return;
-            }
-
-            Cryption.SetCryption(bPic);
-            //то есть в первом пикселе будет символ /, который говорит о том, что картика зашифрована
-
-            Cryption.WriteCountText(CountText, bPic); //записываем количество символов для шифрования
-
-            Cryption.Enrypt(bPic, bList); // Кодируем сообщение
-            pictureBox1.Image = bPic;
 
             String sFilePic;
             SaveFileDialog dSavePic = new SaveFileDialog();
@@ -138,13 +99,10 @@ namespace StegProject
            
             Bitmap bPic = new Bitmap(rFile);
 
-            if (!Cryption.isEncryption(bPic)) {
-                MessageBox.Show("В файле нет зашифрованной информации", "Информация", MessageBoxButtons.OK);
-                rFile.Close();
-                return;
-            }
 
-            byte[] message = Cryption.Decrypt(bPic); // расшифрованное сообщение в битовой форме
+
+            byte[] message = Cryption.Decrypt(bPic, rFile); // расшифрованное сообщение в битовой форме
+
 
             string strMessage = Encoding.GetEncoding(1251).GetString(message);
 
