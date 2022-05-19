@@ -38,9 +38,9 @@
             // 
             this.Enrypt.Location = new System.Drawing.Point(12, 12);
             this.Enrypt.Name = "Enrypt";
-            this.Enrypt.Size = new System.Drawing.Size(75, 23);
+            this.Enrypt.Size = new System.Drawing.Size(92, 23);
             this.Enrypt.TabIndex = 0;
-            this.Enrypt.Text = "Записать ";
+            this.Enrypt.Text = "Зашифровать";
             this.Enrypt.UseVisualStyleBackColor = true;
             this.Enrypt.Click += new System.EventHandler(this.Enrypt_Click);
             // 
@@ -55,11 +55,11 @@
             // 
             // Decrypt
             // 
-            this.Decrypt.Location = new System.Drawing.Point(110, 12);
+            this.Decrypt.Location = new System.Drawing.Point(145, 12);
             this.Decrypt.Name = "Decrypt";
-            this.Decrypt.Size = new System.Drawing.Size(97, 23);
+            this.Decrypt.Size = new System.Drawing.Size(109, 23);
             this.Decrypt.TabIndex = 2;
-            this.Decrypt.Text = "Прочитать";
+            this.Decrypt.Text = "Расшифровать";
             this.Decrypt.UseVisualStyleBackColor = true;
             this.Decrypt.Click += new System.EventHandler(this.Decrypt_Click);
             // 
