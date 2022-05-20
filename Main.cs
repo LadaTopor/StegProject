@@ -55,7 +55,7 @@ namespace StegProject
             rText = new FileStream(FileText, FileMode.Open); //открываем поток текстовым файлом
             rFile.Close();
 
-            Cryption.Enrypt(bPic, rText); // Кодируем сообщение
+            Cryption.Enсrypt(bPic, rText); // Кодируем сообщение
 
 
             String sFilePic;
