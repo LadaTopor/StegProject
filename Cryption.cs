@@ -151,7 +151,7 @@ namespace StegProject
             return Convert.ToInt32(m, 10);
         }
 
-        static public void Enrypt(Bitmap bPic, FileStream rText)
+        static public void Enсrypt(Bitmap bPic, FileStream rText)
         {
             BinaryReader bText = new BinaryReader(rText, Encoding.ASCII);
 
