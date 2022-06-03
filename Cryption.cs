@@ -236,15 +236,17 @@ namespace StegProject
 
         static public byte[] Decrypt(Bitmap bPic, FileStream rFile)
         {
-            int countSymbol = ReadCountText(bPic); //считали количество зашифрованных символов
-            byte[] message = new byte[countSymbol];
 
             if (!isEncryption(bPic))
             {
                 MessageBox.Show("В файле нет зашифрованной информации", "Информация", MessageBoxButtons.OK);
                 rFile.Close();
-                return message;
+                return null;
             }
+
+            int countSymbol = ReadCountText(bPic); //считали количество зашифрованных символов
+            byte[] message = new byte[countSymbol];
+           
 
             int index = 0;
             bool st = false;

@@ -102,7 +102,7 @@ namespace StegProject
 
 
             byte[] message = Cryption.Decrypt(bPic, rFile); // расшифрованное сообщение в битовой форме
-
+            if (message == null) { return; }
 
             string strMessage = Encoding.GetEncoding(1251).GetString(message);
 
